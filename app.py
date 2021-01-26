@@ -126,7 +126,8 @@ def estimateDensity(inFileName, outFileName, sigma):
 app= Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' #4/is absolute path
 app.config['IMAGE_UPLOADS'] = 'uploads' #4/is absolute path
-MYDIR = os.path.dirname(__file__)
+#MYDIR = os.path.dirname(__file__)
+#print("\n\n\n"+MYDIR+"this one <-----\n\n\n")
 
 db = SQLAlchemy(app)
 
@@ -143,19 +144,18 @@ class ToDo(db.Model):
 @app.route('/', methods=['POST','GET']) #GET is default without this method parameter
 def index():
     download=False
-    p = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'])
-    for f in os.listdir(p):
+    for f in os.listdir(app.config['IMAGE_UPLOADS']):
         #if not f.endswith(".bak"):
         #    continue
-        os.remove(os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'], f))
+        os.remove(os.path.join(app.config['IMAGE_UPLOADS'], f))
     if request.method == 'POST':
         if request.files:
             svg = request.files['SVG'] #this is where you get the python input with id content
-            svg.save(os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],svg.filename))#svg.filename))
+            svg.save(os.path.join(app.config['IMAGE_UPLOADS'],svg.filename))#svg.filename))
             
             try:
-                inFileName = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],svg.filename)
-                outFileName = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],'output.svg')
+                inFileName = os.path.join(app.config['IMAGE_UPLOADS'],svg.filename)
+                outFileName = os.path.join(app.config['IMAGE_UPLOADS'],'output.svg')
                 estimateDensity(inFileName, outFileName, 5)
                 #return redirect(request.url)
                 download=True
@@ -178,7 +178,7 @@ def index():
     
 @app.route('/download')
 def download_file():
-    p = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],'output.svg')
+    p = os.path.join(app.config['IMAGE_UPLOADS'],'output.svg')
     return send_file(p,as_attachment=True)
 
 
