@@ -1,43 +1,29 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Maker</title>
-
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
+<title>Density Estimation</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {% endblock %}
 
 {% block body %} 
-<div class="content">
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Density Estimation</h1>
-            <p>This application takes an SVG file of circle objects and estimates the density of the objects' coordinates. It then outputs the density map as an svg.</p>
-            <form>
-                <input type="file" id="filename" accept=".svg" >
-                <br>
-                <button type="submit" id="compute" onclick="getDensityMap()" class="btn btn-warning">Run</button>
-            </form>
-        </div>
-        <!--<div class="row">
-        <div class="col-xs-4">-->
-          <!--<img style="width:30%" src="images/weather-icon.png"/>
-          <br> -->
-          
-        <!--</div>-->
-        <!--<div class="col-xs-4">
-        </div>
-        <div class="col-xs-4">
-          <img style="width:40%;padding:5px" src="images/Unknown-1.png"/>
-          <br>
-        <button class="btn btn-warning"><a style="color:white;" href="http://127.0.0.1:5000/detect">Object Detecion</a></button>
-      </div>
-    </div>-->
+<br><br><br><br>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Estimating Cell Density</h1>
+        <p>This application takes an SVG file of circle objects and estimates the density of the objects' coordinates. It then outputs the density map as an SVG file.</p>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="SVG" id="SVG" accept=".svg" >
+            <br>
+            <button type="submit" class="btn btn-warning">Run</button> <!-- id="compute" onclick="getDensityMap()" -->
+        </form>
+        <br>
+        {% if download == True %}
+        <button class="btn btn-warning"><a href="{{url_for('download_file')}}">Download</a></button>
+        {% endif  %}
     </div>
-    <h1 style="text-align: center">Task Master</h1>
-
-    {% if tasks|length < 1 %}
+</div>
+<div class="content">
+    <!--{% if tasks|length < 1 %} 
     <h4>There are no tasks yet. Enter one below.</h4>
     {% else %}
     <table>
@@ -61,6 +47,7 @@
     <form action="/" method="POST">
         <input type="text" name="content" id = 'content'>
         <input type='submit' value = 'Add Task'>
-    </form>
+    </form>-->
 </div>
 {% endblock %}
+
