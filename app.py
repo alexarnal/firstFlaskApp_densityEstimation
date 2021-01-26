@@ -126,6 +126,7 @@ def estimateDensity(inFileName, outFileName, sigma):
 app= Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' #4/is absolute path
 app.config['IMAGE_UPLOADS'] = 'uploads' #4/is absolute path
+MYDIR = os.path.dirname(__file__)
 
 db = SQLAlchemy(app)
 
@@ -142,18 +143,19 @@ class ToDo(db.Model):
 @app.route('/', methods=['POST','GET']) #GET is default without this method parameter
 def index():
     download=False
-    for f in os.listdir(app.config['IMAGE_UPLOADS']):
+    p = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'])
+    for f in os.listdir(p):
         #if not f.endswith(".bak"):
         #    continue
-        os.remove(os.path.join(app.config['IMAGE_UPLOADS'], f))
+        os.remove(os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'], f))
     if request.method == 'POST':
         if request.files:
             svg = request.files['SVG'] #this is where you get the python input with id content
-            svg.save(os.path.join(app.config['IMAGE_UPLOADS'],svg.filename))#svg.filename))
+            svg.save(os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],svg.filename))#svg.filename))
             
             try:
-                inFileName = os.path.join(app.config['IMAGE_UPLOADS'],svg.filename)
-                outFileName = os.path.join(app.config['IMAGE_UPLOADS'],'output.svg')
+                inFileName = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],svg.filename)
+                outFileName = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],'output.svg')
                 estimateDensity(inFileName, outFileName, 5)
                 #return redirect(request.url)
                 download=True
@@ -176,38 +178,9 @@ def index():
     
 @app.route('/download')
 def download_file():
-    p = os.path.join(app.config['IMAGE_UPLOADS'],'output.svg')
+    p = os.path.join(MYDIR + "/" + app.config['IMAGE_UPLOADS'],'output.svg')
     return send_file(p,as_attachment=True)
 
-"""
-@app.route('/delete/<int:id>')
-def delete(id):
-    task_to_delete = ToDo.query.get_or_404(id)
 
-    try:
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        return redirect('/')
-
-    except:
-        return "There was an issue deleting your task"
-
-@app.route('/update/<int:id>', methods = ['GET', 'POST'])
-def update(id):
-    task_to_update = ToDo.query.get_or_404(id)
-
-    if request.method == 'POST':
-        task_to_update.content = request.form['content']
-
-        try:
-            db.session.commit()
-            return redirect('/')
-
-        except:
-            return "There was an issue updating your task"
-
-    else:
-        return render_template('/update.html', task = task_to_update)
-"""
 if __name__ == '__main__':
     app.run(debug=True)
