@@ -10,15 +10,19 @@
 <div class="container">
     <div class="jumbotron">
         <h1>Estimating Cell Density</h1>
-        <p>This application takes an SVG file of circle objects and estimates the density of the objects' coordinates. It then outputs the density map as an SVG file.</p>
+        <p>This application takes an SVG file of circle objects and estimates the density of the objects' coordinates. It then outputs the density map as an SVG file for download.</p>
+        
+        {% if download == False %}
         <form action="/" method="POST" enctype="multipart/form-data">
             <input type="file" name="SVG" id="SVG" accept=".svg" >
             <br>
             <button type="submit" class="btn btn-warning">Run</button> <!-- id="compute" onclick="getDensityMap()" -->
         </form>
         <br>
-        {% if download == True %}
-        <button class="btn btn-warning"><a href="{{url_for('download_file')}}">Download</a></button>
+        {% else %}
+        <form action="/" method="GET">
+            <button type="submit"  class="btn btn-link"><a href="{{url_for('download_file')}}">Download</a></button>
+        </form>
         {% endif  %}
     </div>
 </div>

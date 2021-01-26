@@ -142,6 +142,10 @@ class ToDo(db.Model):
 @app.route('/', methods=['POST','GET']) #GET is default without this method parameter
 def index():
     download=False
+    for f in os.listdir(app.config['IMAGE_UPLOADS']):
+        #if not f.endswith(".bak"):
+        #    continue
+        os.remove(os.path.join(app.config['IMAGE_UPLOADS'], f))
     if request.method == 'POST':
         if request.files:
             svg = request.files['SVG'] #this is where you get the python input with id content
