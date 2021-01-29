@@ -113,7 +113,6 @@ def newColorMap(oldCmap, nColors, reverse=False, opacity=True):
 
 def estimateDensity(inFileName, outFileName, sigma):
     print("\n\n\n\ninside estimation")
-    sigma = 5
     coords, viewBox = getCoordsFromSVG(inFileName)
     print("\n\n\n\ngot coords")
     density = cellDensityMap3(coords,viewBox,sigma)
@@ -156,7 +155,7 @@ def index():
             try:
                 inFileName = os.path.join(app.config['IMAGE_UPLOADS'],svg.filename)
                 outFileName = os.path.join(app.config['IMAGE_UPLOADS'],'output.svg')
-                estimateDensity(inFileName, outFileName, 5)
+                estimateDensity(inFileName, outFileName, 2.5)
                 #return redirect(request.url)
                 download=True
             except:

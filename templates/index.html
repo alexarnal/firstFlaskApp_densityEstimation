@@ -2,11 +2,11 @@
 
 {% block head %}
 <title>Density Estimation</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 {% endblock %}
 
 {% block body %} 
-<br><br><br><br>
+<br><br>
 <div class="container">
     <div class="jumbotron">
         <h1>Estimating Cell Density</h1>
@@ -18,40 +18,19 @@
             <br>
             <button type="submit" class="btn btn-warning">Run</button> <!-- id="compute" onclick="getDensityMap()" -->
         </form>
-        <br>
+        <br><br>
         {% else %}
         <form action="/" method="GET">
             <button type="submit"  class="btn btn-link"><a href="{{url_for('download_file')}}">Download</a></button>
         </form>
+        <br><br>
         {% endif  %}
+        <div class="embed-responsive embed-responsive-16by9" >
+            <iframe class="embed-responsive-item" src="https://player.vimeo.com/video/505908696"  frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <br>
     </div>
 </div>
-<div class="content">
-    <!--{% if tasks|length < 1 %} 
-    <h4>There are no tasks yet. Enter one below.</h4>
-    {% else %}
-    <table>
-        <tr>
-            <th>Task</th>
-            <th>Added</th>
-            <th>Actions</th>
-        </tr>
-        {% for task in tasks %}
-        <tr>
-            <td>{{ task.content }}</td>
-            <td>{{ task.date_created.date() }}</td>
-            <td>
-                <a href="/delete/{{ task.id }}">Delete</a>
-                <a href="/update/{{ task.id }}">Update</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif  %}
-    <form action="/" method="POST">
-        <input type="text" name="content" id = 'content'>
-        <input type='submit' value = 'Add Task'>
-    </form>-->
-</div>
+<br><br>
 {% endblock %}
 
